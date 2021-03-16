@@ -3,9 +3,8 @@ let initialState = {
 		{
 			list: "Default",
 			checked: true,
-			taskStore: [ { task: "n1t1", completed: false }, { task: "n1t2", completed: true } ]
-		},
-		{ list: "secondary", checked: false, taskStore: [ { task: "test2", completed: false } ] },
+			taskStore: []
+		}
 	],
 	currentList: 'Default',
 }
@@ -91,10 +90,16 @@ const taskStorage = ( state = initialState, action ) => {
 				} ) ],
 				currentList: action.payload
 			}
+		case 'DELETE_LIST':
+
+			return {
+				...state,
+				storage: [ ...state.storage.filter( remove => remove.list !== action.payload ) ]
+			}
 
 		//	Default
 		default:
-			return state
+			return { ...state }
 	}
 }
 
