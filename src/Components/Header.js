@@ -1,7 +1,7 @@
 import React from "react";
-import { AppBar, Box, Button, Grid, Typography } from "@material-ui/core";
 import { deleteAll, deleteDone } from "../redux/actions";
 import { useDispatch } from "react-redux";
+import { AppBar, Box, Button, Grid, Typography } from "@material-ui/core";
 import myStyles from "../MaterialUI/myStyles";
 
 const Header = () => {

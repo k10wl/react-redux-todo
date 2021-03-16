@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { Box, Button, Grid, Input } from "@material-ui/core";
 import { addTodo } from "../redux/actions";
-import { useDispatch, useSelector } from "react-redux";
+import { connect, useDispatch } from "react-redux";
 import myStyles from "../MaterialUI/myStyles";
 
-const InputField = () => {
+const InputField = ( props ) => {
 
 	const dispatch = useDispatch()
 	const classes = myStyles()
@@ -15,7 +15,7 @@ const InputField = () => {
 	// The following code is here coz i fucked up with nesting <input> and <button> inside of <form>
 	// - This one binds clears input field after its info is passed into redux
 	const emptyInputFieldAfterDispatch = () => {
-		setName( '' )
+	setName( '' )
 	}
 	// - And this one allows user to "submit" task after pressing enter key
 	const dispatchOnEnterDown = ( e ) => {
@@ -27,8 +27,7 @@ const InputField = () => {
 
 	// This prevents duplicating tasks and creating empty tasks
 	// - Im not sure if its right to map whole redux storage every time but i have not worked out better solution
-	const taskStorage = useSelector( state => state.storage )
-	const taskStorageWithoutSpaces = taskStorage.map( todo => todo.task.replace( / /g, '' ) )
+	const taskStorageWithoutSpaces = props.tasks.map( todo => todo.task.replace( / /g, '' ) )
 	const nameWithoutSpaces = name.replace( / /g, '' )
 	// - Just a boolean with filtering stuff. I feel like this is nice way to separate options from actual sorting
 	const filterOptions = (
@@ -76,5 +75,11 @@ const InputField = () => {
 	)
 }
 
-export default InputField
+const mapStateToProps = function ( state ) {
+	return {
+		state,
+		tasks: state.storage.find( task => task.list === state.currentList ).taskStore
+	}
+}
 
+export default connect( mapStateToProps )( InputField )
