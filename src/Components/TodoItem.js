@@ -11,7 +11,15 @@ const TodoItem = ( props ) => {
 
 	return (
 		<Grid>
-			{ props.tasks.map( todo =>
+			{ props.tasks.length === 0 ?
+				<Grid container justify={"center"} >
+					<Typography
+						variant={"body2"}
+						style={{color: '#b0b0b0', userSelect: 'none'}}>
+						Your tasks will be displayed here</Typography>
+				</Grid>
+				:
+				props.tasks.map( todo =>
 				<Grid
 					key={ todo.task }
 					className={ classes.itemsSeparation }
@@ -40,7 +48,6 @@ const TodoItem = ( props ) => {
 				</Grid>
 			) }
 		</Grid>
-		// <h1>d</h1>
 	)
 }
 

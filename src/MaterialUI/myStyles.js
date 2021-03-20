@@ -1,6 +1,6 @@
 import { makeStyles } from "@material-ui/core";
 
-const myStyles = makeStyles({
+const myStyles = makeStyles((theme) => ({
 
 	// Used in TodoItem to separate items from each other
 	itemsSeparation: {
@@ -68,11 +68,21 @@ const myStyles = makeStyles({
 		backgroundColor: 'rgb(51 68 165)',
 	},
 
+	listItemBox: {
+		position: "relative"
+	},
+
+	listDelete: {
+		position: 'absolute',
+		right: '5%',
+	},
+
 	// Used in TodoLists to create scrolling option
 	listsBox: {
 		overflowY: 'auto',
+		overflowX: 'hidden',
 		height: '80vh',
 	}
-})
+}))
 
 export default myStyles

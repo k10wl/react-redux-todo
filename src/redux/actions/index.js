@@ -1,3 +1,5 @@
+import store from "../store";
+
 // Actions upon tasks
 export const addTodo = ( todo ) => {
 	return {
@@ -34,16 +36,32 @@ export const deleteAll = () => {
 
 // Actions upon lists
 
-export const createList = ( list ) => {
+export const createList = ( createList ) => {
 	return {
 		type: 'CREATE_LIST',
-		payload: list
+		payload: createList
 	}
 }
 
-export const switchList = ( list ) => {
+export const switchList = ( switchList ) => {
 	return {
 		type: 'SWITCH_LIST',
-		payload: list
+		payload: switchList
 	}
 }
+
+const deleteList = ( removeList ) => {
+	return {
+		type: 'DELETE_LIST',
+		payload: removeList
+	}
+}
+
+export const switchListAndDeleteList = ( remove ) => {
+	return async ( dispatch ) => {
+		let searchWhichListWasPrev = store.getState().storage.map( x => x.list ).indexOf( remove ) - 1
+		let switchToPrev = store.getState().storage[ searchWhichListWasPrev ].list
+		dispatch( switchList( switchToPrev ) )
+		dispatch( deleteList( remove ) )
+	}
+};
