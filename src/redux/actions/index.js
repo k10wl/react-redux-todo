@@ -1,67 +1,71 @@
 import store from "../store";
 
 // Actions upon tasks
-export const addTodo = ( todo ) => {
-	return {
-		type: 'ADD_TODO',
-		payload: todo,
-	}
-}
+export const addTodo = (newTodo) => {
+  return {
+    type: "ADD_TODO",
+    payload: newTodo,
+  };
+};
 
-export const deleteTodo = ( todo ) => {
-	return {
-		type: 'DELETE_TODO',
-		payload: todo,
-	}
-}
+export const deleteTodo = (removeTodo) => {
+  return {
+    type: "DELETE_TODO",
+    payload: removeTodo,
+  };
+};
 
-export const toggleTodo = ( todo ) => {
-	return {
-		type: 'TOGGLE_TODO',
-		payload: todo
-	}
-}
+export const toggleTodo = (switchTodoState) => {
+  return {
+    type: "TOGGLE_TODO",
+    payload: switchTodoState,
+  };
+};
 
 export const deleteDone = () => {
-	return {
-		type: 'DELETE_DONE'
-	}
-}
+  return {
+    type: "DELETE_DONE",
+  };
+};
 
 export const deleteAll = () => {
-	return {
-		type: 'DELETE_ALL'
-	}
-}
+  return {
+    type: "DELETE_ALL",
+  };
+};
 
 // Actions upon lists
 
-export const createList = ( createList ) => {
-	return {
-		type: 'CREATE_LIST',
-		payload: createList
-	}
-}
+export const createList = (newListName) => {
+  return {
+    type: "CREATE_LIST",
+    payload: newListName,
+  };
+};
 
-export const switchList = ( switchList ) => {
-	return {
-		type: 'SWITCH_LIST',
-		payload: switchList
-	}
-}
+export const switchList = (swapList) => {
+  return {
+    type: "SWITCH_LIST",
+    payload: swapList,
+  };
+};
 
-const deleteList = ( removeList ) => {
-	return {
-		type: 'DELETE_LIST',
-		payload: removeList
-	}
-}
+const deleteList = (removeList) => {
+  return {
+    type: "DELETE_LIST",
+    payload: removeList,
+  };
+};
 
-export const switchListAndDeleteList = ( remove ) => {
-	return async ( dispatch ) => {
-		let searchWhichListWasPrev = store.getState().storage.map( x => x.list ).indexOf( remove ) - 1
-		let switchToPrev = store.getState().storage[ searchWhichListWasPrev ].list
-		dispatch( switchList( switchToPrev ) )
-		dispatch( deleteList( remove ) )
-	}
+export const switchListAndDeleteList = (remove) => {
+  return async (dispatch) => {
+    const searchWhichListWasPrev =
+      store
+        .getState()
+        .storage.map((x) => x.list)
+        .indexOf(remove) - 1;
+    const switchToPrev = store.getState().storage[searchWhichListWasPrev].list;
+    dispatch(switchList(switchToPrev));
+    dispatch(deleteList(remove));
+  };
 };

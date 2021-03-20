@@ -1,107 +1,86 @@
-let initialState = {
-	storage: [
-		{
-			list: "Default",
-			checked: true,
-			taskStore: []
-		}
-	],
-	currentList: 'Default',
-}
+const initialState = {
+  storage: [
+    {
+      list: "Default",
+      checked: true,
+      taskStore: [],
+    },
+  ],
+  currentList: "Default",
+};
 
-const taskStorage = ( state = initialState, action ) => {
-	switch ( action.type ) {
+const taskStorage = (state = initialState, action) => {
+  const locateSelectedList = state.storage.find(
+    (x) => x.list === state.currentList
+  );
+  const locateSelectedTask = locateSelectedList.taskStore.find(
+    (x) => x.task === action.payload
+  );
 
-		// Controlling tasks
-		case 'ADD_TODO':
-			return {
-				...state,
-				storage: [ ...state.storage.map( add => {
-					if ( add.list === state.currentList ) {
-						add.taskStore.push( { task: action.payload, completed: false } )
-					}
-					return add
-				} ) ],
-			}
-		case 'DELETE_TODO':
-			return {
-				...state,
-				storage: [ ...state.storage.map( del => {
-					if ( del.list === state.currentList ) {
-						del.taskStore = del.taskStore.filter( del => del.task !== action.payload )
-					}
-					return del
-				} ) ]
-			}
-		case 'TOGGLE_TODO':
-			return {
-				...state,
-				storage: [ ...state.storage.map( set => {
-					if ( set.list === state.currentList ) {
-						set.taskStore.map( toggle => {
-							if ( toggle.task === action.payload ) {
-								toggle.completed = !toggle.completed
-							}
-							return toggle
-						} )
-					}
-					return set;
-				} ) ]
-			}
-		case 'DELETE_DONE':
-			return {
-				...state,
-				storage: [ ...state.storage.map( del => {
-						if ( del.list === state.currentList ) {
-							del.taskStore = del.taskStore.filter( remove => remove.completed !== true )
-						}
-						return del
-					}
-				) ]
-			}
-		case 'DELETE_ALL':
-			return {
-				...state,
-				storage: [ ...state.storage.map( clear => {
-						if ( clear.list === state.currentList ) {
-							clear.taskStore = []
-						}
-						return clear
-					}
-				) ]
-			}
+  switch (action.type) {
+    case "ADD_TODO":
+      locateSelectedList.taskStore.push({
+        task: action.payload,
+        completed: false,
+      });
+      return {
+        ...state,
+      };
+    case "DELETE_TODO":
+      locateSelectedList.taskStore = locateSelectedList.taskStore.filter(
+        (x) => x.task !== action.payload
+      );
+      return {
+        ...state,
+      };
+    case "TOGGLE_TODO":
+      locateSelectedTask.completed = !locateSelectedTask.completed;
+      return {
+        ...state,
+      };
+    case "DELETE_DONE":
+      locateSelectedList.taskStore = locateSelectedList.taskStore.filter(
+        (x) => x.completed !== true
+      );
+      return {
+        ...state,
+      };
+    case "DELETE_ALL":
+      locateSelectedList.taskStore = [];
+      return {
+        ...state,
+      };
 
-		//	Controlling lists
-		case 'CREATE_LIST':
-			return {
-				...state,
-				storage: [ ...state.storage, { list: action.payload, checked: false, taskStore: [] } ]
-			}
-		case 'SWITCH_LIST':
-			return {
-				...state,
-				storage: [ ...state.storage.map( toggle => {
-					if ( toggle.list === action.payload ) {
-						toggle.checked = true
-					} else if ( toggle.list !== action.payload ) {
-						toggle.checked = false
-					}
-					return toggle
-				} ) ],
-				currentList: action.payload
-			}
-		case 'DELETE_LIST':
+    case "CREATE_LIST":
+      return {
+        ...state,
+        storage: [
+          ...state.storage,
+          { list: action.payload, checked: false, taskStore: [] },
+        ],
+      };
+    case "SWITCH_LIST":
+      state.storage.map((toggle) => {
+        const change = toggle;
+        if (toggle.list === action.payload) change.checked = true;
+        if (toggle.list !== action.payload) change.checked = false;
+        return change;
+      });
+      return {
+        ...state,
+        currentList: action.payload,
+      };
+    case "DELETE_LIST":
+      return {
+        ...state,
+        storage: [
+          ...state.storage.filter((remove) => remove.list !== action.payload),
+        ],
+      };
 
-			return {
-				...state,
-				storage: [ ...state.storage.filter( remove => remove.list !== action.payload ) ]
-			}
+    default:
+      return { ...state };
+  }
+};
 
-		//	Default
-		default:
-			return { ...state }
-	}
-}
-
-export default taskStorage
-
+export default taskStorage;
